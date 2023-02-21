@@ -4,4 +4,4 @@ from .models import Note
 
 # Create your views here.
 def index(response):
-    return render(response, "notes/base.html", {})
+    return render(response, "notes/notes.html", {})
