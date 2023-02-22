@@ -1,14 +1,11 @@
 {% extends 'notes/base.html' %}
 
+
 {% block content %}
 <div id="content", name="list" class="mainnav">
     <ul>
-        {% csrf_token %}
-        {% for title in notes %}
-            <li><a href="/">
-                    <h3>{{title}}</h3>
-                </a>
-            </li>
+        {% for note in notes %}
+        <li>{{note.title}}</li>
         {% endfor %}
     </ul>
 </div>
