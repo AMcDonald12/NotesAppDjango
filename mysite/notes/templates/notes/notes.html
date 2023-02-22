@@ -3,19 +3,24 @@
 
 {% block content %}
 <div id="content", name="list" class="mainnav">
-    <ul>
+    <ul class="list-group">
+        <button type="submit" class="btn btn-outline-warning">Create New Note</button>
         {% for note in notes %}
-        <li>{{note.title}}</li>
+        <li class="list-group-item">
+            <a href="/">{{note.title}}</a>
+        </li>
         {% endfor %}
     </ul>
 </div>
         
-
+{% load crispy_forms_tags %}
 {{ form.media }}
 <div class="main">   
     <form  method="post">
         {% csrf_token %}
-        {{ form.as_p  }}  
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="submit" class="btn btn-danger">Delete</button>
     </form>
 </div> 
 {% endblock %}
