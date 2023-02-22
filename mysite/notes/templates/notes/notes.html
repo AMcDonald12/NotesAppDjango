@@ -3,23 +3,17 @@
 {% block content %}
 <div id="content", name="list" class="mainnav">
     <ul>
-        <li><a href="/">
-                <h3>Title 1</h3>
-                <p>beginning of a note...</p>
-            </a>
-        </li>
-        <li><a href="/">
-                <h3>Title 2</h3>
-                <p>beginning of a note...</p>
-            </a>
-        </li>
-        <li><a href="/">
-                <h3>Title 3</h3>
-                <p>beginning of a note...</p>
-            </a>
-        </li>
+        {% csrf_token %}
+        {% for note in notes.item_set.all %}
+            <li><a href="/">
+                    <h3>note.title</h3>
+                    <p>note.notes</p>
+                </a>
+            </li>
+        {% endfor %}
     </ul>
 </div>
+        
 
 {{ form.media }}
 <div class="main">   
