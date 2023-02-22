@@ -8,6 +8,10 @@ def home(response):
     return render(response, "notes/home.html", {})
 
 def notes(response, id):
-    notes = Note.objects.all()
+    note_db = Note.objects.all()
+    notes = {}
+    for note in note_db:
+        if note.user_id == id:
+            notes[note.title] = note.content
     form = NoteEditor()
     return render(response, "notes/notes.html", {"form":form, "notes":notes})

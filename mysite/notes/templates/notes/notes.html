@@ -4,10 +4,9 @@
 <div id="content", name="list" class="mainnav">
     <ul>
         {% csrf_token %}
-        {% for note in notes.item_set.all %}
+        {% for title in notes %}
             <li><a href="/">
-                    <h3>note.title</h3>
-                    <p>note.notes</p>
+                    <h3>{{title}}</h3>
                 </a>
             </li>
         {% endfor %}
