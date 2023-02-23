@@ -1,19 +1,28 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
 from .models import Note
 from .forms import NoteEditor
 
-def get_user_notes(user_id):
-    user_notes = Note.objects.filter(user_id=user_id)
-    notes = {note.title:note.content for note in user_notes}
-    return notes
-
 # Create your views here.
-def notes(response):
+def home(response):
+    if response.user.is_authenticated:
+        return redirect("/logout")
+    return redirect("/login")
+
+def welcome(response):
     if response.user.is_authenticated:
         user_id = response.user.id
-        notes = get_user_notes(user_id)
-        default_note = list(notes.keys())[0]
-        form = NoteEditor(initial={'title':default_note, 'content':notes[default_note]})
+        notes = Note.objects.filter(user_id=user_id)
+        current_note = notes.first()
+        return HttpResponseRedirect("/%i" %current_note.id)
+    return redirect('/login')
+
+def notes(response, note_id):
+    if response.user.is_authenticated:
+        user_id = response.user.id
+        notes = Note.objects.filter(user_id=user_id)
+        current_note = notes.get(id=note_id)
+        form = NoteEditor(initial={'title':current_note.title, 'content':current_note.content})
         return render(response, "notes/notes.html", {"form":form, "notes":notes})
     return redirect('/login')
 
@@ -22,8 +31,4 @@ def create(response):
         new_note = Note(title='New Note', content="Start typing notes here.")
         new_note.save()
         response.user.note.add(new_note)
-    return redirect('/')
-
-def select(response):
-
-    return redirect('/')
+    return HttpResponseRedirect("/%i" %new_note.id)
