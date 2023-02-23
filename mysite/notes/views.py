@@ -2,15 +2,16 @@ from django.shortcuts import render, redirect
 from .models import Note
 from .forms import NoteEditor
 
+def get_user_notes(user_id):
+    user_notes = Note.objects.filter(user_id=user_id)
+    notes = {note.title:note.content for note in user_notes}
+    return notes
+
 # Create your views here.
 def notes(response):
     if response.user.is_authenticated:
-        id = response.user.id
-        note_db = Note.objects.all()
-        notes = {}
-        for note in note_db:
-            if note.user_id == id:
-                notes[note.title] = note.content
+        user_id = response.user.id
+        notes = get_user_notes(user_id)
         default_note = list(notes.keys())[0]
         form = NoteEditor(initial={'title':default_note, 'content':notes[default_note]})
         return render(response, "notes/notes.html", {"form":form, "notes":notes})
@@ -23,6 +24,6 @@ def create(response):
         response.user.note.add(new_note)
     return redirect('/')
 
-def select(response, id):
+def select(response):
 
-    return render(response, "notes/notes.html", )
+    return redirect('/')
