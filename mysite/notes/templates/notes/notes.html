@@ -2,7 +2,7 @@
 
 
 {% block content %}
-<div id="content", name="list" class="mainnav">
+<div id="content" name="list" class="mainnav">
     <ul class="list-group">
         <form method="post" action="/create/">
             {% csrf_token %}
@@ -19,11 +19,11 @@
 {% load crispy_forms_tags %}
 {{ form.media }}
 <div class="main">   
-    <form  method="post">
+    <form  method="post" action="/update/">
         {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit" class="btn btn-success">Save</button>
-        <button type="submit" class="btn btn-danger">Delete</button>
+        <button type="submit" name="save" class="btn btn-success">Save</button>
+        <button type="submit" name="delete" class="btn btn-danger">Delete</button>
     </form>
 </div> 
 {% endblock %}

@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from .models import Note
 from .forms import NoteEditor
 
+#Call this when creating a new user, creating a new note
 def new_note(response):
     new_note = Note(title='New Note', content="Start typing notes here.")
     new_note.save()
@@ -10,11 +11,6 @@ def new_note(response):
     return new_note
 
 # Create your views here.
-def home(response):
-    if response.user.is_authenticated:
-        return redirect("/welcome")
-    return redirect("/login")
-
 def welcome(response):
     if response.user.is_authenticated:
         user_id = response.user.id
@@ -39,3 +35,6 @@ def create(response):
     if response.method == "POST":
         new = new_note(response)
     return HttpResponseRedirect("/%i" %new.id)
+
+def update(repsonse):
+    pass
