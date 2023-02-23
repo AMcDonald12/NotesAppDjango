@@ -3,10 +3,16 @@ from django.http import HttpResponseRedirect
 from .models import Note
 from .forms import NoteEditor
 
+def new_note(response):
+    new_note = Note(title='New Note', content="Start typing notes here.")
+    new_note.save()
+    response.user.note.add(new_note)
+    return new_note
+
 # Create your views here.
 def home(response):
     if response.user.is_authenticated:
-        return redirect("/logout")
+        return redirect("/welcome")
     return redirect("/login")
 
 def welcome(response):
@@ -14,7 +20,10 @@ def welcome(response):
         user_id = response.user.id
         notes = Note.objects.filter(user_id=user_id)
         current_note = notes.first()
-        return HttpResponseRedirect("/%i" %current_note.id)
+        if current_note:
+            return HttpResponseRedirect("/%i" %current_note.id)
+        new = new_note(response)
+        return HttpResponseRedirect("/%i" %new.id)
     return redirect('/login')
 
 def notes(response, note_id):
@@ -28,7 +37,5 @@ def notes(response, note_id):
 
 def create(response):
     if response.method == "POST":
-        new_note = Note(title='New Note', content="Start typing notes here.")
-        new_note.save()
-        response.user.note.add(new_note)
-    return HttpResponseRedirect("/%i" %new_note.id)
+        new = new_note(response)
+    return HttpResponseRedirect("/%i" %new.id)
