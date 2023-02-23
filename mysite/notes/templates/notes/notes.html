@@ -1,6 +1,5 @@
 {% extends 'notes/base.html' %}
 
-
 {% block content %}
 <div id="content" name="list" class="mainnav">
     <ul class="list-group">
@@ -11,6 +10,7 @@
         {% for note in notes %}
         <li class="list-group-item">
             <a href="/{{note.id}}">{{note.title}}</a>
+            <p>Updated: {{note.updated}}</p>
         </li>
         {% endfor %}
     </ul>
@@ -22,8 +22,8 @@
     <form  method="post" action="/update/">
         {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit" name="save" class="btn btn-success">Save</button>
-        <button type="submit" name="delete" class="btn btn-danger">Delete</button>
+        <button type="submit" name="save" value="{{note_id}}" class="btn btn-success">Save</button>
+        <button type="submit" name="delete" value="{{note_id}}" class="btn btn-danger">Delete</button>
     </form>
 </div> 
 {% endblock %}

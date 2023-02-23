@@ -23,18 +23,32 @@ def welcome(response):
     return redirect('/login')
 
 def notes(response, note_id):
-    if response.user.is_authenticated:
-        user_id = response.user.id
-        notes = Note.objects.filter(user_id=user_id)
-        current_note = notes.get(id=note_id)
-        form = NoteEditor(initial={'title':current_note.title, 'content':current_note.content})
-        return render(response, "notes/notes.html", {"form":form, "notes":notes})
-    return redirect('/login')
+    try:
+        if response.user.is_authenticated:
+            user_id = response.user.id
+            notes = Note.objects.filter(user_id=user_id)
+            current_note = notes.get(id=note_id)
+            form = NoteEditor(initial={'title':current_note.title, 'content':current_note.content})
+            return render(response, "notes/notes.html", {"form":form, "notes":notes, "note_id":current_note.id})
+        return redirect('/login')
+    except:
+        return redirect('/')
 
 def create(response):
     if response.method == "POST":
         new = new_note(response)
     return HttpResponseRedirect("/%i" %new.id)
 
-def update(repsonse):
-    pass
+def update(response):
+    if response.method == "POST" and "save" in response.POST:
+        note_id = response.POST["save"]
+        note_to_update = Note.objects.get(id=note_id)
+        note_to_update.title = response.POST['title'] 
+        note_to_update.content = response.POST['content']
+        note_to_update.save()
+        return HttpResponseRedirect("/%i" %int(note_id))
+    if response.method == "POST" and "delete" in response.POST:
+        note_id = response.POST["delete"]
+        note_to_delete = Note.objects.get(id=note_id)
+        note_to_delete.delete()
+        return redirect("/")
