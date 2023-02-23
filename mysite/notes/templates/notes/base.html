@@ -4,7 +4,7 @@
     <style type="text/css">
         .sidenav {
             height:100%;
-            width:160px;
+            width:100px;
             position: fixed;
             z-index:1;
             top:0;
@@ -28,13 +28,14 @@
 
         .mainnav {
             height:100%;
-            width: 300px;
+            width: 250px;
             position: fixed;
             z-index:1;
             top:0;
-            left:160px;
-            background-color: rgb(248, 244, 244);
+            left:100px;
+            background-color: white;
             overflow-x:hidden;
+            overflow:auto;
             padding-top:20px;
         }
 
@@ -51,11 +52,11 @@
         }
         
         .mainnav a:hover {
-            color: rgb(255, 196, 0);
+            color: rgb(255, 191, 0);
         }
 
         .main {
-            margin-left: 460px;
+            margin-left: 350px;
             text-align: center;
             padding: 10px 10px;
         }
@@ -63,6 +64,14 @@
         .register {
             margin-left: 160px;
             padding: 10px 10px;
+        }
+
+        #new {
+        width: 250px;
+        }
+
+        #logo {
+            outline-style: groove;
         }
     </style>
 
@@ -77,6 +86,7 @@
 </head>
 <body>
     <div class="sidenav">
+        <a id='logo' href="/">Notes</a>
         <a href="/login">Sign in</a>
         <a href="/register">Register</a>
         <a href="/logout">Logout</a>
